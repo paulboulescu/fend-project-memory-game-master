@@ -1,29 +1,68 @@
-/*
- * Create a list that holds all of your cards
- */
 
+// list with all the available card values
+const availableValues=[
+	'fa-diamond', 
+	'fa-paper-plane-o', 
+	'fa-anchor', 
+	'fa-cube', 
+	'fa-leaf', 
+	'fa-bicycle', 
+	'fa-bomb', 
+	'fa-bolt'
+];
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+// 
+function generateValues(values) {
+	let cardValues = [];
+	for(let i=0; i<values.length; i++) {
+		cardValues[2*i]=values[i];
+		cardValues[2*i+1]=values[i];
+	}
+	return cardValues;
+}
 
-// Shuffle function from http://stackoverflow.com/a/2450976
+function createCards(values) {
+	// select all cars from the DOM
+	let cards = document.querySelectorAll('.card .fa');
+	// use counter to select each value from the shuffled card values
+	let counter = 0;
+	// loop over each of the selected card Elements
+	for (card of cards){
+		// add value to display through class
+		card.classList.add(values[counter]);
+		counter++;
+	}
+}
+
+// shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
+    let currentIndex = array.length, temporaryValue, randomIndex;
     while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
+        let randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = array[currentIndex];
+        let temporaryValue = array[currentIndex];
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
+
+
+// Initialization function used every time before game starts
+function initialize() {
+	// select card values, two of each
+	let cardValues=generateValues(availableValues);
+	// shuffle the card values using the provided "shuffle" method
+	cardValues=shuffle(cardValues);
+	// create the HTML for each card
+	createCards(cardValues);
+}
+
+// initialize the game
+initialize();
+
+
+
 
 
 /*
