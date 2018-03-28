@@ -47,6 +47,23 @@ function shuffle(array) {
     return array;
 }
 
+function resetScore() {
+	// select all stars from the DOM
+	const stars = document.querySelectorAll('.stars .fa');
+	// loop over each of the selected stars
+	for (let star of stars){
+		// add full star value
+		star.classList.add('fa-star');
+		// remove any hald star value
+		star.classList.remove('fa-star-half-full');
+		// remove and empty star value
+		star.classList.remove('fa-star-o');
+	}
+	// select the 'Moves' element
+	const moves = document.querySelector('.moves');
+	// reset the 'Moves' element counter to 0
+	moves.textContent='0';
+}
 
 // Initialization function used every time before game starts
 function initialize() {
@@ -56,6 +73,8 @@ function initialize() {
 	cardValues=shuffle(cardValues);
 	// create the HTML for each card
 	createCards(cardValues);
+	// reset the score
+	resetScore();
 }
 
 // initialize the game
