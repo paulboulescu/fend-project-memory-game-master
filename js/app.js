@@ -11,10 +11,13 @@ const availableValues=[
 	'fa-bolt'
 ];
 
-// 
+// generate a list with pairs of values
 function generateValues(values) {
+	// create an empty array
 	let cardValues = [];
+	// loop through the available card values
 	for(let i=0; i<values.length; i++) {
+		// add two of each card value to the list
 		cardValues[2*i]=values[i];
 		cardValues[2*i+1]=values[i];
 	}
@@ -84,10 +87,93 @@ function createInteraction(){
 	// loop over each of the selected card elements
 	for (let card of cards){
 		// add event listeners for cards
-		card.addEventListener('click', openCard);
+		card.addEventListener('click', clickCard);
 	}
 }
 
-// initialize the game
+// a card is clicked
+function clickCard(event) {
+	// asign target element to constant
+	const card = event.target;
+	// disable interaction
+	card.removeEventListener('click', clickCard);
+	// open the card
+	openCard(card);
+	// check match
+	checkMatch();
+}
+
+// opens a card
+function openCard(target) {
+	// open the card
+	target.classList.add('open');
+	target.classList.add('show');
+	// add to open cards list
+	openCards.push(target);
+}
+
+// checks if two matching cards are opened
+function checkMatch() {
+	// chck if two cards are opened
+	if (openCards.length==2) {
+		// check if cards values match
+		if (openCards[0].firstElementChild.className==openCards[1].firstElementChild.className) {
+			// cards values match
+			cardsMatch();
+		} else{
+			// cards values don't match
+			cardsNoMatch();
+		}
+	}
+}
+
+// matching cards
+function cardsMatch() {
+	// loops through the opened cards
+	for(let indexCount = 0; indexCount < openCards.length; indexCount++) {
+		let card = openCards[indexCount];
+		// shows the matching animation
+		card.classList.remove('open');
+		card.classList.remove('show');
+		card.classList.add('match');
+	}
+	// removes the matching cards from the list
+	openCards=[];
+}
+
+// non-matching cards
+function cardsNoMatch() {
+	// loops through the opened cards
+	for(let indexCount = 0; indexCount < openCards.length; indexCount++) {
+		let card = openCards[indexCount];
+		// shows the non-matching animation
+		card.classList.remove('open');
+		card.classList.remove('show');
+		card.classList.add('no-match');	
+	}
+	// creats a copy of the open cards array - allows the user to open new cards before the non-matching animation ended
+	let openCardsCopy=openCards.slice();
+	// runs the closing cards animation when non-validation animation ends
+	setTimeout(function(){closeCard(openCardsCopy)},800);
+	// removes the matching cards from the list - allows the user to open new cards
+	openCards=[];
+}
+
+// closes a card
+function closeCard(array) {
+	// loops through an array of previously opened non-matching cards
+	for(let indexCount = 0; indexCount < array.length; indexCount++) {
+		let card = array[indexCount];
+		// shows the closing animation
+		card.classList.remove('no-match');
+		// enables interaction with the card
+		card.addEventListener('click', clickCard);
+	}
+}
+
+// initialize the game - asigns card values - resets the counter
 initialize();
+// adds interaction to cards and restart button
 createInteraction();
+// creates an empty list that stores the list of opened cards for match checking
+let openCards=[];
