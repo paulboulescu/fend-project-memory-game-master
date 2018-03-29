@@ -217,7 +217,7 @@ h1 {
 */
 
 
-.score-panel .restart {
+.score-panel .restart-button {
     cursor: pointer;
     /*keep the hit area large enough for small screens*/
     padding: 1.5em;

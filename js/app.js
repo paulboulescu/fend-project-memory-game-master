@@ -6,21 +6,21 @@
 // Initialization function used every time before game starts
 function initialize() {
 	// select card values, two of each
-	let cardValues = generateValues(availableValues);
+	let cardValues = generateValues(game.resources.availableValues);
 	// shuffle the card values using the provided "shuffle" method
 	cardValues = shuffle(cardValues);
 	// create the HTML for each card
 	createCards(cardValues);
 	// reset matches counter
-	openCards = [];
+	game.params.openCards = [];
 	// counts the number of moves
-	movesCounter = 0;
+	game.params.movesCounter = 0;
 	// counts the number of matches
-	matchesCounter = 0;
+	game.params.matchesCounter = 0;
 	// update counter
 	updateCounter();
 	// prepare the timer
-	gameStarted = false;
+	game.params.gameStarted = false;
 }
 
 // generate a list with pairs of values
@@ -51,12 +51,10 @@ function shuffle(array) {
 
 // add values to cards
 function createCards(values) {
-	// select all cars from the DOM
-	let cards = document.querySelectorAll('.card');
 	// use counter to select each value from the shuffled card values
 	let counter = 0;
 	// loop over each of the selected card Elements
-	for (card of cards){
+	for (card of game.ui.cards){
 		// add value to display through class
 		card.firstElementChild.className = `fa ${values[counter]}`;
 		card.classList.remove('open');
@@ -69,28 +67,22 @@ function createCards(values) {
 
 // update number of moves and rating
 function updateCounter() {
-	// select the 'Moves' element
-	const moves = document.querySelector('.moves');
 	// update number of moves
-
-	moves.textContent = `${movesCounter} ${(movesCounter === 1) ? 'Move' : 'Moves'}`;
-
-	// select all stars from the DOM
-	const stars = document.querySelectorAll('.stars .fa');
+	game.ui.moves.textContent = `${game.params.movesCounter} ${(game.params.movesCounter === 1) ? 'Move' : 'Moves'}`;
 	// loop over each of the selected stars
-	for (let starIndex = 0; starIndex < stars.length; starIndex++) {
+	for (let starIndex = 0; starIndex < game.ui.stars.length; starIndex++) {
 		// determine the rank for current score
 		let scoreIndex = 0;
-		while (movesCounter > movesScore[scoreIndex]){
+		while (game.params.movesCounter > game.resources.movesScore[scoreIndex]){
 			scoreIndex++;
 		}
 		// determine state for each star (full/half/empty)
-		let currentRating = Math.max(Math.min(scoreIndex - 2 * starIndex, ratings.length - 1),0);
-		for (let ratingIndex = 0; ratingIndex < ratings.length ; ratingIndex++) {
+		let currentRating = Math.max(Math.min(scoreIndex - 2 * starIndex, game.resources.ratings.length - 1),0);
+		for (let ratingIndex = 0; ratingIndex < game.resources.ratings.length ; ratingIndex++) {
 			if (ratingIndex === currentRating){
-				stars[stars.length - 1 - starIndex].classList.add(ratings[ratingIndex]);
+				game.ui.stars[game.ui.stars.length - 1 - starIndex].classList.add(game.resources.ratings[ratingIndex]);
 			} else {
-				stars[stars.length - 1 - starIndex].classList.remove(ratings[ratingIndex]);
+				game.ui.stars[game.ui.stars.length - 1 - starIndex].classList.remove(game.resources.ratings[ratingIndex]);
 			}
 		}
 	}
@@ -98,20 +90,14 @@ function updateCounter() {
 
 // add event listeners for all interactive elements
 function createInteraction() {
-	// select all cards from the DOM
-	let cards = document.querySelectorAll ('.card');
 	// loop over each of the selected card elements
-	for (let card of cards){
+	for (let card of game.ui.cards){
 		// add event listeners for cards
 		card.addEventListener('click', clickCard);
 	}
-	// select the restart button
-	let restart = document.querySelector('.restart');
 	// add event lister for restart
-	restart.addEventListener('click', clickRestart);
-
-	let playAgain = document.querySelector('.game-over .play-button');
-	playAgain.addEventListener('click', clickPlayAgain);
+	game.ui.restartButton.addEventListener('click', clickRestart);
+	game.ui.playAgainButton.addEventListener('click', clickPlayAgain);
 }
 
 // 
@@ -121,11 +107,11 @@ function createInteraction() {
 // checks if two matching cards are opened
 function checkMatch() {
 	// chck if two cards are opened
-	if (openCards.length === 2) {
+	if (game.params.openCards.length === 2) {
 		// check if cards values match
-		if (openCards[0].firstElementChild.className === openCards[1].firstElementChild.className) {
+		if (game.params.openCards[0].firstElementChild.className === game.params.openCards[1].firstElementChild.className) {
 			//update matches counter
-			matchesCounter++;
+			game.params.matchesCounter++;
 			// cards values match
 			cardsMatch();
 		} else {
@@ -133,7 +119,7 @@ function checkMatch() {
 			cardsNoMatch();
 		}
 		// increse moves counter
-		movesCounter++;
+		game.params.movesCounter++;
 		// update moses counter
 		updateCounter();
 	}
@@ -141,7 +127,7 @@ function checkMatch() {
 
 // check if game is over
 function checkGameOver() {
-	if (matchesCounter === availableValues.length){
+	if (game.params.matchesCounter === game.resources.availableValues.length){
 		showEndMessage();
 		resetTimer()
 	}
@@ -149,22 +135,20 @@ function checkGameOver() {
 
 // show game over message
 function showEndMessage() {
-	const pop = document.querySelector('.game-over');
 	// make message visible
-	pop.classList.add('open')
-	const message = document.querySelector('.game-over .message');
+	game.ui.pop.classList.add('open')
 	// determine the number of stars
 	let scoreIndex = 0;
-	while (movesCounter > movesScore[scoreIndex]){
+	while (game.params.movesCounter > game.resources.movesScore[scoreIndex]){
 		scoreIndex++;
 	}
-	const noOfStars = (3-(Math.min(scoreIndex , movesScore.length - 1)*0.5));
+	const noOfStars = (3-(Math.min(scoreIndex , game.resources.movesScore.length - 1)*0.5));
 	const {seconds, minutes} = calculateTime();
 	const timeValue = determineTimeValue(seconds, minutes);
 	const recordMessage = checkRecord();
 	// show custom message
-	message.textContent = `In ${timeValue}, with ${movesCounter} ${(movesCounter === 1) ? 'move' : 'moves'}, and ${noOfStars} ${(noOfStars === 1) ? 'star' : 'stars'}. ${recordMessage}`;
-	currentScreen = 'result';
+	game.ui.message.textContent = `In ${timeValue}, with ${game.params.movesCounter} ${(game.params.movesCounter === 1) ? 'move' : 'moves'}, and ${noOfStars} ${(noOfStars === 1) ? 'star' : 'stars'}. ${recordMessage}`;
+	game.params.currentScreen = 'result';
 }
 
 // checks for user's all time record and returns custom message
@@ -172,16 +156,16 @@ function checkRecord() {
 	// retrieves the user's all time best score, if it's available 
 	let bestMoves = localStorage.bestMoves ? localStorage.bestMoves : null;
 	if (bestMoves) {
-		if (bestMoves < movesCounter) {
-				return `Your all time record is ${bestMoves} ${(movesCounter === 1) ? 'move' : 'moves'}. Try harder!`;
-			} else if (Number(bestMoves) === Number(movesCounter)) {
+		if (bestMoves < game.params.movesCounter) {
+				return `Your all time record is ${bestMoves} ${(game.params.movesCounter === 1) ? 'move' : 'moves'}. Try harder!`;
+			} else if (Number(bestMoves) === Number(game.params.movesCounter)) {
 				return 'It\'s the same as your previous record!';
 			} else {
-				bestMoves = localStorage.bestMoves = movesCounter;
+				bestMoves = localStorage.bestMoves = game.params.movesCounter;
 				return 'This is a new record!';
 			}
 	} else {
-		bestMoves = localStorage.bestMoves = movesCounter;
+		bestMoves = localStorage.bestMoves = game.params.movesCounter;
 		return 'This is a new record!';
 	}
 }
@@ -196,7 +180,7 @@ function openCard (target) {
 	target.classList.add('open');
 	target.classList.add('show');
 	// add to open cards list
-	openCards.push(target);
+	game.params.openCards.push(target);
 }
 
 // closes a card
@@ -214,33 +198,33 @@ function closeCard (array) {
 // matching cards
 function cardsMatch() {
 	// loops through the opened cards
-	for(let index = 0; index < openCards.length; index++) {
-		let card = openCards[index];
+	for(let index = 0; index < game.params.openCards.length; index++) {
+		let card = game.params.openCards[index];
 		// shows the matching animation
 		card.classList.remove('open');
 		card.classList.remove('show');
 		card.classList.add('match');
 	}
 	// removes the matching cards from the list
-	openCards = [];
+	game.params.openCards = [];
 }
 
 // non-matching cards
 function cardsNoMatch() {
 	// loops through the opened cards
-	for(let index = 0; index < openCards.length; index++) {
-		let card = openCards[index];
+	for(let index = 0; index < game.params.openCards.length; index++) {
+		let card = game.params.openCards[index];
 		// shows the non-matching animation
 		card.classList.remove('open');
 		card.classList.remove('show');
 		card.classList.add('no-match');
 	}
 	// creats a copy of the open cards array - allows the user to open new cards before the non-matching animation ended
-	let openCardsCopy = openCards.slice();
+	let openCardsCopy = game.params.openCards.slice();
 	// runs the closing cards animation when non-validation animation ends
 	setTimeout(function() {closeCard(openCardsCopy)}, 800);
 	// removes the matching cards from the list - allows the user to open new cards
-	openCards = [];
+	game.params.openCards = [];
 }
 
 //
@@ -269,22 +253,21 @@ function clickCard(event) {
 	// check if game is over
 	checkGameOver()
 	// start timer on first interaction
-	if(gameStarted === false){
+	if(game.params.gameStarted === false){
 		startTimer();
-		gameStarted = true;
+		game.params.gameStarted = true;
 	}
 }
 
 // hide game over message
 function clickPlayAgain() {
-	const pop = document.querySelector('.game-over');
 	// make message invisible
-	pop.classList.remove('open')
+	game.ui.pop.classList.remove('open')
 	// initialize the game
 	initialize();
 	// adds interaction to cards and restart button
 	createInteraction();
-	currentScreen = 'deck';
+	game.params.currentScreen = 'deck';
 }
 
 // 
@@ -293,20 +276,20 @@ function clickPlayAgain() {
 
 // start timer
 function startTimer() {
-	gameTimer = setInterval(timerFunction, 1000);
-	startTime = performance.now();
+	game.params.timer = setInterval(timerFunction, 1000);
+	game.params.startTime = performance.now();
 }
 
 // update timer
 function timerFunction() {
-	passedTime = performance.now()-startTime;
+	game.params.passedTime = performance.now()-game.params.startTime;
 	updateTime();
 }
 
 // calculate minutes and seconds
 function calculateTime() {
-	const minutes = Math.floor(passedTime/60000);
-	const seconds = Math.floor((passedTime-minutes*60000)/1000);
+	const minutes = Math.floor(game.params.passedTime/60000);
+	const seconds = Math.floor((game.params.passedTime-minutes*60000)/1000);
 	return {seconds, minutes};
 }
 
@@ -326,13 +309,12 @@ function determineTimeValue(seconds, minutes) {
 // update game timer
 function updateTime() {
 	const {seconds, minutes} = calculateTime();
-	const displayTimer = document.querySelector('.timer');
 	const timeValue = determineTimeValue(seconds, minutes);
-	displayTimer.textContent=timeValue;
+	game.ui.timer.textContent=timeValue;
 }
 
 function resetTimer() {
-	clearInterval(gameTimer);
+	clearInterval(game.params.timer);
 	const displayTimer = document.querySelector('.timer');
 	displayTimer.textContent = '00:00';
 }
@@ -341,8 +323,15 @@ function resetTimer() {
 // First run
 // 
 
+
+// handle game's varoab;es
+const game = {};
+
+// handle game's resources
+game.resources={};
+
 // available card values
-const availableValues = [
+game.resources.availableValues = [
 	'fa-diamond', 
 	'fa-paper-plane-o', 
 	'fa-anchor', 
@@ -354,32 +343,48 @@ const availableValues = [
 ];
 
 // intervals for rating
-const movesScore = [12, 15, 18, 20, 22, 24, 26]
+game.resources.movesScore = [12, 15, 18, 20, 22, 24, 26];
 
 // states for each star - full/half/empty
-const ratings = [
+game.resources.ratings = [
 	'fa-star',
 	'fa-star-half-full',
 	'fa-star-o'
-]
+];
+
+// handle game's DOM elements
+game.ui = {};
+game.ui.message = document.querySelector('.game-over .message');
+game.ui.pop = document.querySelector('.game-over');
+game.ui.cards = document.querySelectorAll('.card');
+game.ui.moves = document.querySelector('.moves');
+game.ui.stars = document.querySelectorAll('.stars .fa');
+game.ui.cards = document.querySelectorAll ('.card');
+game.ui.restartButton = document.querySelector('.restart-button');
+game.ui.playAgainButton = document.querySelector('.game-over .play-button');
+game.ui.pop = document.querySelector('.game-over');
+game.ui.timer = document.querySelector('.timer');
+
+// handles game's parameters
+game.params = {};
 
 // creates an empty list that stores the list of opened cards for match checking
-let openCards = [];
+game.params.openCards = [];
 
 // counts the number of moves
-let movesCounter = 0;
+game.params.movesCounter = 0;
 
 // counts the number of matches
-let matchesCounter = 0;
+game.params.matchesCounter = 0;
 
 // prepare the timer
-let gameTimer;
-let startTime;
-let passedTime;
-let gameStarted = false;
+game.params.timer;
+game.params.startTime;
+game.params.passedTime;
+game.params.gameStarted = false;
 
 // used to determine action based on keypress
-let currentScreen = 'deck';
+game.params.currentScreen = 'deck';
 
 // initialize the game - asigns card values - resets the counter
 initialize();
@@ -390,10 +395,10 @@ createInteraction();
 // adds keyboard interaction
 document.addEventListener ('keyup', function (event) {
 	var pressedKey = event.key || event.keyCode;
-	if (pressedKey === 'r' && currentScreen === 'deck') {
+	if (pressedKey === 'r' && game.params.currentScreen === 'deck') {
 		clickRestart();
 	}
-	if (pressedKey === 'Enter' && currentScreen === 'result') {
+	if (pressedKey === 'Enter' && game.params.currentScreen === 'result') {
 		clickPlayAgain();
 	}
 });
