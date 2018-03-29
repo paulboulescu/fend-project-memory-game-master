@@ -2,7 +2,7 @@
 
 ## About
 
-This is the 3rd Project created under Udacity's Front-End Web Developer Nanodegree. The task was to create a 'Memory Game'.
+This is the 3rd Project created under Udacity's Front-End Web Developer Nanodegree. The task was to create a _Memory Game_.
 
 ## First Run
 
@@ -25,9 +25,9 @@ The game consists of a container (_deck_) with 16 elements (_cards_). The cards 
   * 23-24 moves for 0.5 stars
   * over 25 moves for 0 stars.
 * **Timer** - from the first turned card till the last valid match of the game, the time is measured.
-* **Reset Button** - when clicked (or 'r' key pressed), the game will restart, _Timer_ will be reset to '00:00', and _Moves Counter_ will be reset to '0 Moves'.
+* **Reset Button** - when clicked (or _r_ key pressed), the game will restart, _Timer_ will be reset to _00:00_, and _Moves Counter_ will be reset to _0 Moves_.
 * **Congratulations Pop-Up** - when the game is over, a pop-up appears, informing the user about total time, rating, number of moves, and record.
-* **Play Again Button** - inside the _Congratulations Pop-Up_, when clicked (or 'Enter' key pressed), the _Congratulations Pop-Up_ will disappear and a new game will start.
+* **Play Again Button** - inside the _Congratulations Pop-Up_, when clicked (or _Enter_ key pressed), the _Congratulations Pop-Up_ will disappear and a new game will start.
 
 ## Internal Dependencies
 
