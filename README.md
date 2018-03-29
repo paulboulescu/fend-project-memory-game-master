@@ -35,10 +35,10 @@ The game consists of a container (_deck_) with 16 elements (_cards_). The cards 
 * _css/app.css_ - stores the CSS
 * _js/app.js_ - stores the JavaScript code
 * _img/geometry2.png_ - background pattern
-.gitattributes_ - sets the default behavior, in case people don't have `core.autocrlf set. \# https://help.github.com/articles/dealing-with-line-endings/ * text=auto`
+* _.gitattributes_ - sets the default behavior, in case people don't have `core.autocrlf set. \# https://help.github.com/articles/dealing-with-line-endings/ * text=auto`
 * _.gitignore_ - list of files to be ignored by Git
 * _.CONTRIBUTING.md_ - guideline for contribuiting to this project
-* _.README_ - this current document
+* _.README.md_ - this current document
 
 ## External Dependencies
 
