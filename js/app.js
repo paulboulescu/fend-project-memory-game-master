@@ -70,7 +70,7 @@ function updateCounter() {
 	// update number of moves
 	game.ui.moves.textContent = `${game.params.movesCounter} ${(game.params.movesCounter === 1) ? 'Move' : 'Moves'}`;
 	// loop over each of the selected stars
-	for (let starIndex = 0; starIndex < game.ui.stars.length; starIndex++) {
+	for (let starIndex = 0; starIndex < game.ui.stars.length-1; starIndex++) {
 		// determine the rank for current score
 		let scoreIndex = 0;
 		while (game.params.movesCounter > game.resources.movesScore[scoreIndex]){
@@ -142,7 +142,7 @@ function showEndMessage() {
 	while (game.params.movesCounter > game.resources.movesScore[scoreIndex]){
 		scoreIndex++;
 	}
-	const noOfStars = (3-(Math.min(scoreIndex , game.resources.movesScore.length - 1)*0.5));
+	const noOfStars = (3-(Math.min(scoreIndex , game.resources.movesScore.length)*0.5));
 	const {seconds, minutes} = calculateTime();
 	const timeValue = determineTimeValue(seconds, minutes);
 	const recordMessage = checkRecord();
@@ -343,7 +343,7 @@ game.resources.availableValues = [
 ];
 
 // intervals for rating
-game.resources.movesScore = [12, 15, 18, 20, 22, 24, 26];
+game.resources.movesScore = [12, 15, 18, 20];
 
 // states for each star - full/half/empty
 game.resources.ratings = [
@@ -377,10 +377,16 @@ game.params.movesCounter = 0;
 // counts the number of matches
 game.params.matchesCounter = 0;
 
-// prepare the timer
+//  used to store the timer setInterval()
 game.params.timer;
+
+// used to store the time when game starts (first card turn)
 game.params.startTime;
+
+// used to store the time passed since the game started (first card turn)
 game.params.passedTime;
+
+// used to store it a game is started or not
 game.params.gameStarted = false;
 
 // used to determine action based on keypress
