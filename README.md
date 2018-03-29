@@ -23,7 +23,7 @@ The game consists of a container (_deck_) with 16 elements (_cards_). The cards 
   * 19-20 moves for 1.5 stars
   * 21-22 moves for 1 star
   * 23-24 moves for 0.5 stars
-  * over 25 moves for 0 stars.
+  * over 25 moves for 0 stars
 * **Timer** - from the first turned card till the last valid match of the game, the time is measured.
 * **Reset Button** - when clicked (or _r_ key pressed), the game will restart, _Timer_ will be reset to _00:00_, and _Moves Counter_ will be reset to _0 Moves_.
 * **Congratulations Pop-Up** - when the game is over, a pop-up appears, informing the user about total time, rating, number of moves, and record.
