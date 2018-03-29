@@ -1,3 +1,8 @@
 # How to contribute
 
-The files in this repository are used as the starting point for all students. Because we want students to write the majority of the code themselves, pull requests (most likely) will _not_ be merged into the project.
+## All code within this project has to follow Udacity's style guidelines:
+
+[CSS Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/css.htm)
+[HTML Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/index.html)
+[JavaScript Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/javascript.html)
+[Git Style Guide](https://udacity.github.io/git-styleguide/)

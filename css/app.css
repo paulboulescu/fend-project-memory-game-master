@@ -27,14 +27,21 @@ body {
     min-width: 320px;
 }
 
+
+/*
+ * Style for header (counter)
+ */
+
+
 h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-weight: 700;
 }
+
 
 /*
  * Styles for the deck of cards
  */
+
 
 .deck {
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -157,10 +164,29 @@ h1 {
     }
 }
 
+/*
+ * Styles for Moves Counter
+ */
+
+.moves {
+    font-weight: 400;
+}
+
 
 /*
- * Styles for the Score Panel
+ * Styles for Timer
  */
+
+
+.timer {
+    font-weight: 400;
+}
+
+
+/*
+ * Styles for the Rating System
+ */
+
 
 .score-panel {
     display: flex;
@@ -186,16 +212,25 @@ h1 {
     display: inline-block;
 }
 
+/*
+* Style for Restart Button
+*/
+
+
 .score-panel .restart {
     cursor: pointer;
-    padding: 1em;
+    /*keep the hit area large enough for small screens*/
+    padding: 1.5em;
 }
+
 
 /*
  * Styles for the Game Over message
  */
 
+
 .game-over {
+    /*hidden while the user is playing*/
     visibility: hidden;
     display: flex;
     justify-content: center;
@@ -211,7 +246,7 @@ h1 {
 }
 
 .game-over.open {
-    /*display: flex;*/
+    /*visible when game is over*/
     visibility: visible;
 }
 
@@ -236,6 +271,7 @@ h1 {
 }
 
 .game-over .play-button {
+    /*keep the hit area large enough for small screens*/
     padding: 1.5em;
     background-color: #20b4a1;
     border: none;

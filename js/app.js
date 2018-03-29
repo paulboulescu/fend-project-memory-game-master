@@ -6,9 +6,9 @@
 // Initialization function used every time before game starts
 function initialize() {
 	// select card values, two of each
-	let cardValues=generateValues(availableValues);
+	let cardValues = generateValues(availableValues);
 	// shuffle the card values using the provided "shuffle" method
-	cardValues=shuffle(cardValues);
+	cardValues = shuffle(cardValues);
 	// create the HTML for each card
 	createCards(cardValues);
 	// reset matches counter
@@ -28,10 +28,10 @@ function generateValues(values) {
 	// create an empty array
 	let cardValues = [];
 	// loop through the available card values
-	for(let i=0; i<values.length; i++) {
+	for (let i = 0; i < values.length; i++) {
 		// add two of each card value to the list
-		cardValues[2*i]=values[i];
-		cardValues[2*i+1]=values[i];
+		cardValues[2*i] = values[i];
+		cardValues[2*i+1] = values[i];
 	}
 	return cardValues;
 }
@@ -73,7 +73,7 @@ function updateCounter() {
 	const moves = document.querySelector('.moves');
 	// update number of moves
 
-	moves.textContent=`${movesCounter} ${ (movesCounter==1) ? 'Move' : 'Moves'}`;
+	moves.textContent = `${movesCounter} ${(movesCounter === 1) ? 'Move' : 'Moves'}`;
 
 	// select all stars from the DOM
 	const stars = document.querySelectorAll('.stars .fa');
@@ -81,23 +81,23 @@ function updateCounter() {
 	for (let starIndex = 0; starIndex < stars.length; starIndex++) {
 		// determine the rank for current score
 		let scoreIndex = 0;
-		while (movesCounter>movesScore[scoreIndex]){
+		while (movesCounter > movesScore[scoreIndex]){
 			scoreIndex++;
 		}
 		// determine state for each star (full/half/empty)
-		let currentRating = Math.max(Math.min(scoreIndex-2*starIndex, ratings.length-1),0);
-		for (let ratingIndex = 0; ratingIndex<ratings.length ; ratingIndex++){
+		let currentRating = Math.max(Math.min(scoreIndex - 2 * starIndex, ratings.length - 1),0);
+		for (let ratingIndex = 0; ratingIndex < ratings.length ; ratingIndex++) {
 			if (ratingIndex === currentRating){
-				stars[stars.length-1-starIndex].classList.add(ratings[ratingIndex]);
-			}else{
-				stars[stars.length-1-starIndex].classList.remove(ratings[ratingIndex]);
+				stars[stars.length - 1 - starIndex].classList.add(ratings[ratingIndex]);
+			} else {
+				stars[stars.length - 1 - starIndex].classList.remove(ratings[ratingIndex]);
 			}
 		}
 	}
 }
 
 // add event listeners for all interactive elements
-function createInteraction(){
+function createInteraction() {
 	// select all cards from the DOM
 	let cards = document.querySelectorAll ('.card');
 	// loop over each of the selected card elements
@@ -121,14 +121,14 @@ function createInteraction(){
 // checks if two matching cards are opened
 function checkMatch() {
 	// chck if two cards are opened
-	if (openCards.length==2) {
+	if (openCards.length === 2) {
 		// check if cards values match
-		if (openCards[0].firstElementChild.className==openCards[1].firstElementChild.className) {
+		if (openCards[0].firstElementChild.className === openCards[1].firstElementChild.className) {
 			//update matches counter
 			matchesCounter++;
 			// cards values match
 			cardsMatch();
-		} else{
+		} else {
 			// cards values don't match
 			cardsNoMatch();
 		}
@@ -141,8 +141,7 @@ function checkMatch() {
 
 // check if game is over
 function checkGameOver() {
-	if(matchesCounter===availableValues.length){
-		console.log("urmeaza sa arat end message");
+	if (matchesCounter === availableValues.length){
 		showEndMessage();
 		resetTimer()
 	}
@@ -156,7 +155,7 @@ function showEndMessage() {
 	const message = document.querySelector('.game-over .message');
 	// determine the number of stars
 	let scoreIndex = 0;
-	while (movesCounter>movesScore[scoreIndex]){
+	while (movesCounter > movesScore[scoreIndex]){
 		scoreIndex++;
 	}
 	const noOfStars = (3-(Math.min(scoreIndex , movesScore.length - 1)*0.5));
@@ -164,39 +163,35 @@ function showEndMessage() {
 	const timeValue = determineTimeValue(seconds, minutes);
 	const recordMessage = checkRecord();
 	// show custom message
-	message.textContent=`In ${timeValue}, with ${movesCounter} ${ (movesCounter==1) ? 'move' : 'moves'}, and ${noOfStars} ${ (noOfStars==1) ? 'star' : 'stars'}. ${recordMessage}`;
+	message.textContent = `In ${timeValue}, with ${movesCounter} ${(movesCounter === 1) ? 'move' : 'moves'}, and ${noOfStars} ${(noOfStars === 1) ? 'star' : 'stars'}. ${recordMessage}`;
 	currentScreen = 'result';
 }
-
 
 // checks for user's all time record and returns custom message
 function checkRecord() {
 	// retrieves the user's all time best score, if it's available 
 	let bestMoves = localStorage.bestMoves ? localStorage.bestMoves : null;
-	if (bestMoves){
-		if(bestMoves < movesCounter) {
-				return `Your all time record is ${bestMoves} ${ (movesCounter==1) ? 'move' : 'moves'}. Try harder!`;
+	if (bestMoves) {
+		if (bestMoves < movesCounter) {
+				return `Your all time record is ${bestMoves} ${(movesCounter === 1) ? 'move' : 'moves'}. Try harder!`;
 			} else if (Number(bestMoves) === Number(movesCounter)) {
 				return 'It\'s the same as your previous record!';
 			} else {
 				bestMoves = localStorage.bestMoves = movesCounter;
-				return 'This is a new record! 2';
+				return 'This is a new record!';
 			}
 	} else {
 		bestMoves = localStorage.bestMoves = movesCounter;
-		return 'This is a new record! 1';
+		return 'This is a new record!';
 	}
 }
-
-// localStorage.removeItem("bestMoves");
-
 
 // 
 // Card states
 // 
 
 // opens a card
-function openCard(target) {
+function openCard (target) {
 	// open the card
 	target.classList.add('open');
 	target.classList.add('show');
@@ -205,9 +200,9 @@ function openCard(target) {
 }
 
 // closes a card
-function closeCard(array) {
+function closeCard (array) {
 	// loops through an array of previously opened non-matching cards
-	for(let index = 0; index < array.length; index++) {
+	for (let index = 0; index < array.length; index++) {
 		let card = array[index];
 		// shows the closing animation
 		card.classList.remove('no-match');
@@ -227,7 +222,7 @@ function cardsMatch() {
 		card.classList.add('match');
 	}
 	// removes the matching cards from the list
-	openCards=[];
+	openCards = [];
 }
 
 // non-matching cards
@@ -241,11 +236,11 @@ function cardsNoMatch() {
 		card.classList.add('no-match');
 	}
 	// creats a copy of the open cards array - allows the user to open new cards before the non-matching animation ended
-	let openCardsCopy=openCards.slice();
+	let openCardsCopy = openCards.slice();
 	// runs the closing cards animation when non-validation animation ends
-	setTimeout(function(){closeCard(openCardsCopy)},800);
+	setTimeout(function() {closeCard(openCardsCopy)}, 800);
 	// removes the matching cards from the list - allows the user to open new cards
-	openCards=[];
+	openCards = [];
 }
 
 //
@@ -274,9 +269,9 @@ function clickCard(event) {
 	// check if game is over
 	checkGameOver()
 	// start timer on first interaction
-	if(gameStarted===false){
+	if(gameStarted === false){
 		startTimer();
-		gameStarted=true;
+		gameStarted = true;
 	}
 }
 
@@ -317,8 +312,8 @@ function calculateTime() {
 
 // create the time string for display
 function determineTimeValue(seconds, minutes) {
-	if(minutes<100){
-		const timeValue=`${ (minutes<10) ? ('0'+minutes.toString()) : minutes.toString() }:${ (seconds<10) ? ('0'+seconds.toString()) : seconds.toString() }`;
+	if(minutes < 100){
+		const timeValue = `${ (minutes < 10) ? ('0'+minutes.toString()) : minutes.toString() }:${ (seconds < 10) ? ('0' + seconds.toString()) : seconds.toString() }`;
 		return timeValue;
 	} else {
 		const timeValue = '--:--';
@@ -339,7 +334,7 @@ function updateTime() {
 function resetTimer() {
 	clearInterval(gameTimer);
 	const displayTimer = document.querySelector('.timer');
-	displayTimer.textContent='00:00';
+	displayTimer.textContent = '00:00';
 }
 
 // 
@@ -347,7 +342,7 @@ function resetTimer() {
 // 
 
 // available card values
-const availableValues=[
+const availableValues = [
 	'fa-diamond', 
 	'fa-paper-plane-o', 
 	'fa-anchor', 
@@ -359,10 +354,10 @@ const availableValues=[
 ];
 
 // intervals for rating
-const movesScore=[12, 15, 18, 20, 22, 24, 26]
+const movesScore = [12, 15, 18, 20, 22, 24, 26]
 
 // states for each star - full/half/empty
-const ratings=[
+const ratings = [
 	'fa-star',
 	'fa-star-half-full',
 	'fa-star-o'
@@ -393,12 +388,12 @@ initialize();
 createInteraction();
 
 // adds keyboard interaction
-document.addEventListener('keyup', function (event) {
-	var key = event.key || event.keyCode;
-	if (key === 'r' && currentScreen === 'deck') {
+document.addEventListener ('keyup', function (event) {
+	var pressedKey = event.key || event.keyCode;
+	if (pressedKey === 'r' && currentScreen === 'deck') {
 		clickRestart();
 	}
-	if (key === 'Enter' && currentScreen === 'result') {
+	if (pressedKey === 'Enter' && currentScreen === 'result') {
 		clickPlayAgain();
 	}
 });
