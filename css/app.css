@@ -8,17 +8,13 @@ html {
     box-sizing: inherit;
 }
 
-html,
 body {
-    width: 100%;
-    height: 100%;
     margin: 0;
     padding: 0;
-}
-
-body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
-    font-family: 'Coda', cursive;
+    /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    font-family: 'Open Sans', sans-serif;
+    min-width: 320px;   
 }
 
 .container {
@@ -26,6 +22,9 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin:0 auto 0 auto;
+    max-width: 680px;
+    min-width: 320px;
 }
 
 h1 {
@@ -38,23 +37,25 @@ h1 {
  */
 
 .deck {
-    width: 660px;
-    min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    margin: 0 0 3em;
+    padding: 4% 0 0 4%;
+    width: 90vw;
+    height: 90vw;
+    max-width: 680px;
+    max-height: 680px;
+    min-width: 320px;
+    min-height: 320px;
 }
 
 .deck .card {
     animation: close-animation linear 300ms 1;
-    height: 125px;
-    width: 125px;
+    width: 20%;
+    height: 20%;
     background: #2e3d49;
     font-size: 0;
     color: #ffffff;
@@ -64,8 +65,10 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    margin: 0 4% 4% 0;
 }
 
+/*cards animation for closing*/
 @keyframes close-animation {
     0% {
         transform: rotateY(0deg);
@@ -81,6 +84,7 @@ h1 {
     cursor: default;
 }
 
+/*cards animation for opening cards*/
 @keyframes open-animation {
     0% {
         transform: rotateY(-180deg);
@@ -95,12 +99,13 @@ h1 {
 }
 
 .deck .card.match {
-    animation: match-animation linear 300ms 1; 
+    animation: match-animation linear 300ms 1;
     cursor: default;
     background: #02ccba;
     font-size: 33px;
 }
 
+/*cards animation if they match*/
 @keyframes match-animation {
     0% {
         transform: scale(1,1);
@@ -119,6 +124,7 @@ h1 {
     }
 }
 
+/*cards state when they don't match*/
 .deck .card.no-match {
     animation: no-match-animation linear 800ms 1;
     cursor: default;
@@ -126,6 +132,7 @@ h1 {
     font-size: 33px;
 }
 
+/*card animation if they don't match*/
 @keyframes no-match-animation {
     0% {
         transform: translate(0px, 0px) rotate(0);
@@ -156,9 +163,15 @@ h1 {
  */
 
 .score-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     text-align: left;
-    width: 345px;
+    width: 90vw;
+    max-width: 680px;
+    min-width: 320px;
     margin-bottom: 10px;
+    padding: 0 20px 0 20px;
 }
 
 .score-panel .stars {
@@ -174,6 +187,92 @@ h1 {
 }
 
 .score-panel .restart {
-    float: right;
     cursor: pointer;
+    padding: 1em;
 }
+
+/*
+ * Styles for the Game Over message
+ */
+
+.game-over {
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.game-over.open {
+    /*display: flex;*/
+    visibility: visible;
+}
+
+.game-over .congratulations {
+    color: #333333;
+    font-size: 35px;
+    font-weight: 700;
+    padding: 0;
+    line-height: 1.5em;
+    margin: 0 0 10px 0;
+    text-align: center;
+} 
+
+.game-over .message {
+    color: #666666;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 0;
+    line-height: 1.5em;
+    margin: 0 0 25px 0;
+    text-align: center;
+}
+
+.game-over .play-button {
+    padding: 1.5em;
+    background-color: #20b4a1;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    outline:none;
+}
+
+/*media queri for screens smaller or equal to 680px */
+@media screen and (max-width: 680px) {
+
+    .deck {
+        border-radius: 5px;
+        box-shadow: 6px 4px 10px 0 rgba(46, 61, 73, 0.5);
+    }
+
+    .deck .card {
+        border-radius: 4px;
+        box-shadow: 4px 2px 10px 0 rgba(46, 61, 73, 0.5);
+    }
+
+    .deck .card.show {
+        font-size: 25px;
+    }
+
+    .deck .card.match {
+        font-size: 25px;
+    }
+
+    .deck .card.no-match {
+        font-size: 25px;
+    }
+
+}
+
